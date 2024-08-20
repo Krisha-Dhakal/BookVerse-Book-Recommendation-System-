@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>BookVerse</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f1e4d8;
+            color: #4a2c19;
+            font-family: 'Poppins', sans-serif;
+        }
+        .navbar {
+            /* background-color: #343a40; */
+            background-color: #4a2c19;
+            /* padding: 1rem; */
+            padding: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .navbar-brand {
+            font-size: 70px;
+            color: #fff !important;
+            font-family: 'Dancing Script', cursive;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        .navbar-nav {
+            display: flex;
+            align-items: center;
+        }
+        .nav-item {
+            margin-left: 20px;
+        }
+        .nav-link {
+            color: #fff !important;
+            font-size: 1rem;
+            font-family: 'Poppins', sans-serif;
+        }
+        .nav-link:hover {
+            color: black !important;
+            background-color: #f1e4d8 !important;
+        }
+        .ml-auto {
+            margin-left: auto;
+        }
+        .card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            height: 350px; /* Adjust height as needed */
+        }
+        .card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+        }
+        .card-img-top {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .card-body {
+            padding: 20px;
+            text-align: center;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            background-color:  rgba(0, 0, 0, 0.7);
+            opacity: 0;
+            transition: opacity 0.3s;
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 100%;
+            color: #ffffff;
+        }
+        .card:hover .card-body {
+            opacity: 1;
+        }
+        .card-title {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+        }
+        .card-subtitle {
+            font-size: 1rem;
+            color: #ffffff;
+        }
+        .input-group-lg .form-control {
+            border-radius: 0.3rem;
+        }
+        .btn-gradient {
+            background: linear-gradient(45deg, #ae7d5e, #4a2c19);
+            border: none;
+            color: white;
+            transition: background 0.3s;
+        }
+        .btn-gradient:hover {
+            background: linear-gradient(45deg, #4a2c19, #ae7d5e);
+            color: white;
+        }
+
+        .input-group-lg .input-group-append .btn {
+            border-radius: 0 0.3rem 0.3rem 0;
+        }
+        
+        h1 {
+            font-size: 50px;
+            margin-bottom: 30px;
+        }
+        .container {
+            margin-top: 30px;
+        }
+        ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        li {
+            margin: 5px 0;
+            font-size: 1.125rem;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="navbar-nav">
+            <a class="nav-link" href="/">Home</a>
+            <a class="nav-link" href="/about">About</a>
+        </div>
+        <a class="navbar-brand" href="#">BookVerse</a>
+        <div class="navbar-nav ml-auto">
+            <a class="nav-link" href="/recommend1">Endorse</a>
+            <a class="nav-link" href="/logout">Logout</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <h1>Search Similar Books</h1>
+                <form action="/recommend_books" method="post">
+                    <div class="input-group input-group-lg mb-3">
+                        <input name="user_input" type="text" class="form-control" placeholder="Enter a book name" required>
+                        <div class="input-group-append">
+                            <button class="btn btn-gradient" type="submit">Recommend</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="row">
+            {% if error %}
+                <div class="col-md-12 text-center">
+                    <p>{{ error }}</p>
+                    {% if similar_books %}
+                        <h2>Did you mean one of these books?</h2>
+                        <ul>
+                            {% for book in similar_books %}
+                                <li>{{ book }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </div>
+            {% endif %}
+            {% if data %}
+                {% for book in data %}
+                    <div class="col-md-3 col-sm-6 mb-4">
+                        <div class="card">
+                            <img class="card-img-top" src="{{ book[2] }}" alt="{{ book[0] }}">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ book[0] }}</h5>
+                                <h6 class="card-subtitle">{{ book[1] }}</h6>
+                                {% if book|length > 3 %}
+                                    <p class="card-text">Rating: {{ "%.2f"|format(book[3]) }}</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="col-md-12 text-center">
+                    <p>No recommendations found. Please enter a book name to get recommendations.</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Include JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

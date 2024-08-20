@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Book Recommender System</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            color: #4a2c19;
+        }
+        .navbar {
+            background-color: #343a40;
+        }
+        .navbar-brand, .nav-link {
+            color: #fff !important;
+        }
+        .navbar-brand:hover, .nav-link:hover {
+            color: #f8f9fa !important;
+            background-color: #495057 !important;
+        }
+        .carousel-item {
+            background-color: #000;
+            text-align: center;
+        }
+        .carousel-item img {
+            width: 300px;
+            height: auto;
+            margin: 0 auto;
+            opacity: 0.8; /* Adjust opacity to allow background visibility */
+        }
+        .carousel-caption {
+            background-color: rgba(0, 0, 0, 0.7); /* Dark semi-transparent background */
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+        }
+        .card-img-top {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        .card-body {
+            padding: 20px;
+            text-align: center;
+        }
+        .card-title {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+        }
+        .card-subtitle {
+            font-size: 1rem;
+            color: #6c757d;
+        }
+        .input-group-lg .form-control {
+            border-radius: 0.3rem;
+        }
+        .btn-gradient {
+            background: linear-gradient(45deg, #ff6b6b, #f06595);
+            border: none;
+            color: white;
+            transition: background 0.3s;
+        }
+        .btn-gradient:hover {
+            background: linear-gradient(45deg, #f06595, #ff6b6b);
+        }
+        .input-group-lg .input-group-append .btn {
+            border-radius: 0 0.3rem 0.3rem 0;
+        }
+        h1 {
+            font-size: 50px;
+            margin-bottom: 30px;
+        }
+        .container {
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <a class="navbar-brand" href="#">BookVerse</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="/">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/recommend">Endorse</a>
+                </li>
+                
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <h1>Recommend Books</h1>
+                <form action="/recommend_books" method="post">
+                    <div class="input-group input-group-lg mb-3">
+                        <input name="user_input" type="text" class="form-control" placeholder="Enter a book name" required>
+                        <div class="input-group-append">
+                            <button class="btn btn-gradient" type="submit">Recommend</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="row">
+            {% if error %}
+                <div class="col-md-12 text-center">
+                    <p>{{ error }}</p>
+                    {% if similar_books %}
+                        <h2>Did you mean one of these books?</h2>
+                        <ul>
+                            {% for book in similar_books %}
+                                <li>{{ book }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </div>
+            {% endif %}
+            {% if data %}
+                {% for book in data %}
+                    <div class="col-md-3 col-sm-6 mb-4">
+                        <div class="card">
+                            <img class="card-img-top" src="{{ book[2] }}" alt="{{ book[0] }}">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ book[0] }}</h5>
+                                <h6 class="card-subtitle">{{ book[1] }}</h6>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="col-md-12 text-center">
+                    <p>No recommendations found. Please enter a book name to get recommendations.</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Include JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

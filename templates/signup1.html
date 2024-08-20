@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sign Up</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background: url('{{ url_for("static", filename="imgs/bookq.jpg") }}') no-repeat center center fixed;
+            background-size: cover;
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            position: relative;
+        }
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.714); /* Dark overlay with 71% opacity */
+            z-index: 1;
+        }
+        .card {
+            border-radius: 15px;
+            box-shadow: 15px 15px 16px rgba(0, 0, 0, 0.874);
+            background: rgba(255, 255, 255, 0.95); /* Slightly more opaque background */
+            width: 100%;
+            max-width: 500px; /* Fixed width for the card */
+            z-index: 2;
+            border-color: #4a3422;
+        }
+        .card-header {
+            background-color:  #885f3e;
+            color: #fff;
+            font-size: 2rem;
+            text-align: center;
+            border-bottom: none;
+            border-radius: 15px 15px 0 0;
+            padding: 20px;
+        }
+        .card-body {
+            padding: 30px;
+        }
+        .form-control {
+            border-radius: 25px;
+            font-size: 1rem;
+            padding: 15px;
+        }
+        .custom-button {
+            background-color:  #885f3e;
+            border: none;
+            border-radius: 25px;
+            padding: 15px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #fff;
+            width: 100%;
+            text-align: center;
+        }
+        .custom-button:hover {
+            background-color: #d6aa86;
+            color: black;
+        }
+        .form-group label {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+        .alert {
+            border-radius: 25px;
+            font-size: 1rem;
+            padding: 15px;
+        }
+        .text-center a {
+            color: black;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+        .text-center a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="overlay"></div>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-12 d-flex justify-content-center align-items-center">
+                <div class="card">
+                    <div class="card-header">
+                        Hello, there!
+                    </div>
+                    <div class="card-body">
+                        <form method="post">
+                            <div class="form-group">
+                                <label for="username">Username</label>
+                                <input type="text" class="form-control" id="username" name="username" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="password">Password</label>
+                                <input type="password" class="form-control" id="password" name="password" required>
+                            </div>
+                            <button type="submit" class="custom-button">Sign Up</button>
+                            {% with messages = get_flashed_messages(with_categories=true) %}
+                                {% if messages %}
+                                    {% for category, message in messages %}
+                                        <div class="alert alert-{{ category }} mt-3">{{ message }}</div>
+                                    {% endfor %}
+                                {% endif %}
+                            {% endwith %}
+                        </form>
+                        <div class="text-center mt-3">
+                            <p>Already have an account? </p>
+                            <a href="{{ url_for('login') }}">Login here.</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Include JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
