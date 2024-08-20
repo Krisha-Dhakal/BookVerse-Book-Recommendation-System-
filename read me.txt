@@ -1,0 +1,3 @@
+to run this 
+pip install -r requirements.txt
+python app2.py
